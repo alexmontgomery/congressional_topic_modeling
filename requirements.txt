@@ -1,0 +1,6 @@
+lxml
+pandas
+Requests
+selenium
+webdriver_manager
+beautifulsoup4
