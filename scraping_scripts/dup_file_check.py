@@ -47,6 +47,6 @@ def find_duplicate_files(directory):
     else:
         print("No duplicate files found.")
 
-# Example usage
-directory_to_check = 'data'  # Change this to your target directory
+
+directory_to_check = '../data_no_dups'
 find_duplicate_files(directory_to_check)
