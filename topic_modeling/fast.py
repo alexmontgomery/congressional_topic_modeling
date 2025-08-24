@@ -8,7 +8,7 @@ nlp = spacy.load("en_core_web_sm", disable=["ner", "parser"])
 
 
 # directory with the texts
-data_directory = '../data_no_dups'
+data_directory = '../data_ai_titles'
 
 all_docs = []
 
@@ -30,7 +30,13 @@ custom_stopwords = [
     "prohibit", "repeal", "promote", "designate", "allocate", "extend", "ensure", "encourage",
     "increase", "decrease", "enhance", "strengthen", "support", "new", "old", "use", "sec", "asxmlhtmlxmlhtml",
     "think", "really", "sort", "okay", "maybe", "subparagraph", "inserting", "striking", "heading", "amended", "http", "https",
-    "grant", "insert", "generalthe"
+    "grant", "insert", "generalthe", "thank", "going", "know", "right", "just", "need", "people", "like", "briefing", "debriefing",
+    "briefings", "brief", "debrief", "aint", "arent", "cant", "couldve", "couldnt", "didnt", "doesnt", "dont",
+    "gonna", "gotta", "hadnt", "hasnt", "havent", "hed", "hell", "hes", "howd", "howll", "hows", "id", "ill", "im", "ive", "isnt", "itd", "itll", "its",
+    "lets", "mightve", "mightnt", "mustve", "mustnt", "neednt", "shant", "shed", "shell", "shes", "shouldve", "shouldnt", "somebodyll", "somebodys",
+    "someonell", "someones", "thatd", "thatll", "thats", "thered", "therell", "theres", "theyd", "theyll", "theyre", "theyve", "wasnt", "wed", "well",
+    "were", "werent", "whatd", "whatll", "whats", "whatve", "whens", "whered", "wheres", "whereve", "whod", "wholl", "whos", "whove", "whyd", "whyre",
+    "whys", "wont", "wouldve", "wouldnt", "yall", "youd", "youll", "youre", "youve"
 ]
 combined_stopwords = custom_stopwords + list(ENGLISH_STOP_WORDS)
 
@@ -43,29 +49,22 @@ for root, dirs, files in os.walk(data_directory):
                 with open(full_path, 'r') as file:
                     contents = file.read()
                     all_docs.append(contents)
-
             except Exception as e:
                 print(f"An error occurred while reading {full_path}: {e}")
 
+def model(k):
+    docs = all_docs
 
-# split the corpus (e.g. (0, 5809) should cover all in one pass)
-partitions = [(0, 1500), (1500, 3000), (3000, 4500), (4500, 5809)]
-
-# number of topics
-k = 8
-
-for p in partitions:
-
-    docs = all_docs[p[0]:p[1]]
-
-    preprocess = Preprocess(stopwords=combined_stopwords, min_length=4, max_doc_freq=0.7, min_term=10)
+    preprocess = Preprocess(stopwords=combined_stopwords, min_length=4, max_doc_freq=0.7)
     model = FASTopic(k, preprocess)
     top_words, doc_topic_dist = model.fit_transform(docs)
 
     fig = model.visualize_topic(top_n=k)
-    fig.update_layout(title_text=f"Topic-Word Distributions: Documents {p[0]}-{p[1]} of Corpus")
+    fig.update_layout(title_text="Topic-Word Distributions")
     fig.show()
 
-    fig = model.visualize_topic_weights(top_n=k, height=500)
-    fig.update_layout(title_text=f"Topic Weights: Documents {p[0]}-{p[1]} of Corpus")
-    fig.show()
+
+num_topics = [3,5,7,9]
+
+for k in num_topics:
+    model(k)

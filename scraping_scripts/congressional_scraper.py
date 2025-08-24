@@ -134,10 +134,7 @@ def add_missing_row(row):
     If an error occurs when processing a row, add that row 
     to a csv to process later in a second pass
     """
-    #with open("missed_rows_pass1.csv", "a", newline='', encoding='utf-8') as f:        # for pass 1
-    #with open("missed_rows_pass2.csv", "a", newline='', encoding='utf-8') as f:         # for pass 2
-    #with open("missed_rows_pass3.csv", "a", newline='', encoding='utf-8') as f:         # for pass 3
-    with open("missed_rows_pass4.csv", "a", newline='', encoding='utf-8') as f:         # for pass 4
+    with open("ai_missed_rows.csv", "a", newline='', encoding='utf-8') as f: 
         writer = csv.writer(f)
         writer.writerow(row)
 
@@ -150,15 +147,16 @@ def process_row(args):
 #df = pd.read_csv('congressional_to_go_withrows.csv')       # csv source for pass 1
 #df = pd.read_csv('missed_rows_pass1.csv')         # csv source for pass 2
 #df = pd.read_csv('missed_rows_pass2.csv')         # csv source for pass 3
-df = pd.read_csv('missed_rows_pass3.csv')           # csv source for pass 4
-output_dir = 'data'
+#df = pd.read_csv('missed_rows_pass3.csv')           # csv source for pass 4
+df = pd.read_csv('../rows_with_ai_titles.csv')
+output_dir = '../data_ai_titles'
 downloaded_indexes = []
 missed_indexes = []
 
-i, j = 0, 257
+i, j = 0, 200
 print(f"---------------------- Processing indexes {i}-{j-1} (csv rows {i+1}-{j}) ----------------------")
 # multithreading
-with ThreadPoolExecutor(max_workers=15) as executor:
+with ThreadPoolExecutor(max_workers=7) as executor:
     list(executor.map(process_row, [(index, row, output_dir, downloaded_indexes, missed_indexes) for index, row in df.iloc[i:j].iterrows()]))
 
 downloaded_indexes.sort()
