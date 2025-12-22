@@ -56,8 +56,7 @@ def fetch_urls():
     Get the urls and the corresponding document_id from Supabase
     and put into a {id: url} hashmap
     """
-    supabase = get_supabase_client()
-
+    supabase = get_supabase_client()   
     response = (
         supabase.table("documents")
         .select("document_id, url")

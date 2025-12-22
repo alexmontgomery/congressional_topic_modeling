@@ -11,7 +11,7 @@ dist/
 build/
 .venv/
 venv/
-tmenv/
+**/tmvenv/
 env/
 ENV/
 
