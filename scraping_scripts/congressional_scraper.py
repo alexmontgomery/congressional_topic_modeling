@@ -92,8 +92,6 @@ def get_cr_htm(index, row, output_dir, downloaded_indexes, missed_indexes):
     
     # if content was extracted by scraper
     if content:
-        # formats file name as [congress number]_[page type]_[identifier].txt
-        #txt_file_name = f"{url_parts[4]}_{url_parts[5]}_{url_parts[6]}.txt"
         # formats file name as [row index].txt
         txt_file_name = f"{row['row_id']}.txt"
         file_path = os.path.join(output_dir, txt_file_name)
@@ -143,17 +141,12 @@ def process_row(args):
     index, row, output_dir, downloaded_indexes, missed_indexes = args
     get_cr_htm(index, row, output_dir, downloaded_indexes, missed_indexes)
 
-
-#df = pd.read_csv('congressional_to_go_withrows.csv')       # csv source for pass 1
-#df = pd.read_csv('missed_rows_pass1.csv')         # csv source for pass 2
-#df = pd.read_csv('missed_rows_pass2.csv')         # csv source for pass 3
-#df = pd.read_csv('missed_rows_pass3.csv')           # csv source for pass 4
-df = pd.read_csv('../rows_with_ai_titles.csv')
+df = pd.read_csv('../more_rows_11_11_25.csv')
 output_dir = '../data_ai_titles'
 downloaded_indexes = []
 missed_indexes = []
 
-i, j = 0, 200
+i, j = 0, 23
 print(f"---------------------- Processing indexes {i}-{j-1} (csv rows {i+1}-{j}) ----------------------")
 # multithreading
 with ThreadPoolExecutor(max_workers=7) as executor:
